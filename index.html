@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Dinâmico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #006400;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border: 2px solid #006400;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #333;
+        }
+
+        input, textarea, select {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            border: 2px solid #006400;
+            border-radius: 5px;
+            background-color: #eaf1e0;
+        }
+
+        .field-container {
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            background-color: #eaf1e0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #28a745;
+        }
+
+        .field-container div {
+            margin-bottom: 10px;
+        }
+
+        .field-container input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .field-container label {
+            display: inline;
+            margin-left: 5px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        #adicionarCamposBtn {
+            padding: 10px 20px;
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        #adicionarCamposBtn:hover {
+            background-color: #138496;
+        }
+    </style>
+</head>
+<body>
+    <h1>Formulário Dinâmico de Futebol</h1>
+    
+    <button id="adicionarCamposBtn">Adicionar Campos</button>
+
+    <form id="formFutebol">
+        <div id="camposFormulario"></div>
+    </form>
+
+    <div id="resultado"></div>
+
+    <script>
+        document.getElementById('adicionarCamposBtn').addEventListener('click', adicionarCampos);
+
+        function adicionarCampos() {
+            const containerCampos = document.getElementById('camposFormulario');
+            containerCampos.innerHTML = ''; 
+
+            for (let i = 0; i < 5; i++) {
+                const div = document.createElement('div');
+                div.classList.add('field-container');
+                
+                let label, input;
+
+                if (i === 0) {
+                    label = document.createElement('label');
+                    label.innerText = 'Nome do Jogador:';
+                    input = document.createElement('input');
+                    input.type = 'text';
+                    input.id = 'nomeJogador';
+                }
+                else if (i === 1) {
+                    label = document.createElement('label');
+                    label.innerText = 'Posição do Jogador:';
+                    input = document.createElement('textarea');
+                    input.id = 'posicaoJogador';
+                }
+                else if (i === 2) {
+                    label = document.createElement('label');
+                    label.innerText = 'Data de Nascimento:';
+                    input = document.createElement('input');
+                    input.type = 'date';
+                    input.id = 'dataNascimento';
+                }
+                else if (i === 3) {
+                    label = document.createElement('label');
+                    label.innerText = 'Escolha a Liga:';
+                    input = document.createElement('select');
+                    input.id = 'ligaJogador';
+
+                    const option1 = document.createElement('option');
+                    option1.value = 'Champions League';
+                    option1.innerText = 'Champions League';
+                    const option2 = document.createElement('option');
+                    option2.value = 'Premier League';
+                    option2.innerText = 'Premier League';
+                    const option3 = document.createElement('option');
+                    option3.value = 'La Liga';
+                    option3.innerText = 'La Liga';
+
+                    input.appendChild(option1);
+                    input.appendChild(option2);
+                    input.appendChild(option3);
+                }
+                else if (i === 4) {
+                    label = document.createElement('label');
+                    label.innerText = 'Escolha o Gênero:';
+                    input = document.createElement('div');
+                    input.innerHTML = `
+                        <input type="radio" id="masculino" name="genero" value="Masculino"><label for="masculino">Masculino</label>
+                        <input type="radio" id="feminino" name="genero" value="Feminino"><label for="feminino">Feminino</label>
+                    `;
+                }
+
+                div.appendChild(label);
+                div.appendChild(input);
+                containerCampos.appendChild(div);
+            }
+
+            const botaoEnviar = document.createElement('button');
+            botaoEnviar.type = 'button';
+            botaoEnviar.innerText = 'Mostrar Resultados';
+            botaoEnviar.addEventListener('click', exibirResultados);
+            containerCampos.appendChild(botaoEnviar);
+        }
+
+        function exibirResultados() {
+            const nomeJogador = document.getElementById('nomeJogador').value;
+            const posicaoJogador = document.getElementById('posicaoJogador').value;
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            const ligaJogador = document.getElementById('ligaJogador').value;
+            const generoJogador = document.querySelector('input[name="genero"]:checked')?.value;
+
+            let resultadoTexto = `
+                <h3>Valores Inseridos:</h3>
+                <p><strong>Nome do Jogador:</strong> ${nomeJogador}</p>
+                <p><strong>Posição do Jogador:</strong> ${posicaoJogador}</p>
+                <p><strong>Data de Nascimento:</strong> ${dataNascimento}</p>
+                <p><strong>Liga Selecionada:</strong> ${ligaJogador}</p>
+                <p><strong>Gênero Selecionado:</strong> ${generoJogador}</p>
+            `;
+            document.getElementById('resultado').innerHTML = resultadoTexto;
+        }
+    </script>
+</body>
+</html>
